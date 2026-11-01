@@ -1,26 +1,48 @@
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --line: #f2b705;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-paper font-body text-ink antialiased;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+/* Layar sentuh: kilatan abu-abu bawaan browser diganti efek :active di tiap tombol. */
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--line);
+  outline-offset: 3px;
+}
+
+/* Marka tengah jalan: garis putus-putus kuning sebagai pemisah. */
+.dash-h {
+  height: 5px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--line) 0 30px,
+    transparent 30px 56px
+  );
+}
+section[id] {
+  scroll-margin-top: 5rem;
 }
