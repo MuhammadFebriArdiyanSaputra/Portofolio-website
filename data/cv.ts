@@ -15,7 +15,7 @@ export const cvs: Cv[] = [
   {
     label: "CV Web Developer",
     note: "Full stack, Laravel, FastAPI, Next.js",
-    href: "/cv-web-developer.pdf",
+    href: "/cv-web-dev.pdf",
     filename: "cv-web-developer.pdf",
   },
 ];
