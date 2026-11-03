@@ -61,6 +61,9 @@ function Viewer({ src, alt, caption, onClose }: { src: string; alt: string; capt
   const scaleRef = useRef(1); // skala terbaru, dibaca pendengar sentuhan di bawah
   const pinchedAt = useRef(0); // waktu cubitan terakhir, untuk mencegah tutup tak sengaja
   const lastTap = useRef(0);
+  const drag = useRef<{ x: number; y: number; l: number; t: number; moved: boolean } | null>(null);
+  const justDragged = useRef(false);
+  const [grabbing, setGrabbing] = useState(false);
   const [scale, setScale] = useState(1);
   const [nat, setNat] = useState<{ w: number; h: number } | null>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
@@ -141,6 +144,40 @@ function Viewer({ src, alt, caption, onClose }: { src: string; alt: string; capt
     };
   }, [apply]);
 
+  // Desktop: tahan klik kiri lalu geser untuk menggeser gambar; Ctrl + scroll (atau cubit trackpad) untuk zoom.
+  useEffect(() => {
+    const move = (e: MouseEvent) => {
+      const d = drag.current;
+      const el = box.current;
+      if (!d || !el) return;
+      const dx = e.clientX - d.x;
+      const dy = e.clientY - d.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) d.moved = true;
+      el.scrollLeft = d.l - dx;
+      el.scrollTop = d.t - dy;
+    };
+    const up = () => {
+      if (!drag.current) return;
+      justDragged.current = drag.current.moved;
+      drag.current = null;
+      setGrabbing(false);
+    };
+    const wheel = (e: WheelEvent) => {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      apply(scaleRef.current - e.deltaY * 0.01);
+    };
+    const el = box.current;
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", up);
+    el?.addEventListener("wheel", wheel, { passive: false });
+    return () => {
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseup", up);
+      el?.removeEventListener("wheel", wheel);
+    };
+  }, [apply]);
+
   // Gambar landscape dipas ke layar; gambar tinggi dipas ke lebar layar lalu digulir.
   let base = size.w;
   if (nat && size.w && size.h) {
@@ -159,6 +196,10 @@ function Viewer({ src, alt, caption, onClose }: { src: string; alt: string; capt
   }, [width]);
 
   const onImgClick = () => {
+    if (justDragged.current) {
+      justDragged.current = false; // lepas dari geseran, bukan ketukan
+      return;
+    }
     const now = Date.now();
     if (now - lastTap.current < 300) apply(scale > 1.2 ? 1 : 2.5); // ketuk dua kali
     lastTap.current = now;
@@ -190,7 +231,14 @@ function Viewer({ src, alt, caption, onClose }: { src: string; alt: string; capt
       <div
         ref={box}
         className="flex-1 overflow-auto"
-        style={{ touchAction: "pan-x pan-y" }}
+        style={{ touchAction: "pan-x pan-y", cursor: scale > 1 ? (grabbing ? "grabbing" : "grab") : "zoom-in" }}
+        onMouseDown={(e) => {
+          if (e.button !== 0 || scale <= 1 || !box.current) return;
+          e.preventDefault();
+          drag.current = { x: e.clientX, y: e.clientY, l: box.current.scrollLeft, t: box.current.scrollTop, moved: false };
+          justDragged.current = false;
+          setGrabbing(true);
+        }}
       >
         <div
           className="flex min-h-full w-max min-w-full"
@@ -210,7 +258,7 @@ function Viewer({ src, alt, caption, onClose }: { src: string; alt: string; capt
           />
         </div>
       </div>
-      <p className="px-4 py-2 text-center text-xs text-white/60">Cubit atau ketuk dua kali untuk zoom, geser untuk melihat bagian lain.</p>
+      <p className="px-4 py-2 text-center text-xs text-white/60">Ketuk dua kali untuk zoom, lalu geser untuk melihat bagian lain. Di komputer: Ctrl + scroll untuk zoom.</p>
     </div>
   );
 }

@@ -20,6 +20,7 @@ export type Project = {
   did: string[];
   result: string[];
   limits?: string;
+  recommendations?: string[];
   stack: string[];
   links: ProjectLink[];
   images?: Img[];
@@ -48,6 +49,12 @@ const raw: Omit<Project, "category" | "icon" | "short" | "stat" | "cover">[] = [
     ],
     limits:
       "Proses penyalinan data masih manual. Untuk proyek berikutnya saya berencana memakai Power Query atau Camelot untuk mengekstrak tabel PDF, lalu memeriksa hasilnya.",
+    recommendations: [
+      "Laporkan jumlah penganggur berdampingan dengan TPT. TPT turun dari 4,52% ke 4,19%, tetapi jumlah penganggur naik tipis (207.965 ke 209.161), sehingga TPT saja bisa memberi kesan perbaikan yang berlebihan.",
+      "Perhatikan kualitas pekerjaan, bukan hanya penyerapan kerja. Sekitar 69,1% pekerja berada di sektor informal, jadi program perlu menyentuh perlindungan dan produktivitas pekerja informal.",
+      "Telaah hambatan partisipasi kerja perempuan. TPAK perempuan 54,58% dibanding 85,61% laki-laki dan TPT perempuan lebih tinggi; perempuan juga sekitar 73% pekerja keluarga tak dibayar. Diperlukan data tambahan sebelum menyimpulkan penyebabnya.",
+      "Sesuaikan pelatihan vokasi dengan kebutuhan pasar kerja. TPT lulusan SLTA Kejuruan (8,80%) lebih tinggi daripada SLTA Umum (6,17%), sehingga kesesuaian kompetensi dan permintaan tenaga kerja perlu ditelaah sebelum menambah program.",
+    ],
     stack: ["Excel", "Pivot Table", "Looker Studio"],
     links: [
       { label: "Buka dashboard", href: "https://datastudio.google.com/reporting/c5a1fde9-1f64-47ad-8745-c3f4407b8c48" },
@@ -125,7 +132,7 @@ const raw: Omit<Project, "category" | "icon" | "short" | "stat" | "cover">[] = [
       "Bersama tim: alur persetujuan berjenjang (kepala bidang, sekretariat, kepala dinas, lalu admin) dan desain database",
     ],
     result: [
-      "Sekitar 90% selesai. Alur surat dari pembuatan, persetujuan berjenjang, pembuatan nomor surat otomatis oleh admin, sampai disposisi sudah berjalan.",
+      "Alur utama sudah berjalan dari awal sampai akhir: pembuatan surat, persetujuan berjenjang oleh pimpinan, nomor surat otomatis oleh admin, hingga disposisi.",
     ],
     limits:
       "Rencana pengembangan: pemisahan data antar admin, agar surat masuk yang ditujukan ke admin tertentu hanya terlihat oleh admin itu. Saat ini data semua admin masih digunakan bersama.",
@@ -161,6 +168,13 @@ const raw: Omit<Project, "category" | "icon" | "short" | "stat" | "cover">[] = [
       "Dua produk tampak paling stabil (churn 8%), tetapi data 3 sampai 4 produk terlalu kecil (266 dan 60 pelanggan) untuk disimpulkan.",
     ],
     limits: "Analisis bersifat deskriptif pada data publik, belum ada model prediksi.",
+    recommendations: [
+      "Prioritaskan Germany untuk investigasi lebih lanjut (survei kepuasan atau wawancara), karena polanya berbeda dari France dan Spain di hampir semua dimensi.",
+      "Buat program retensi khusus untuk pelanggan usia 46 sampai 60, terutama di Germany (churn 67,3%).",
+      "Jalankan kampanye reaktivasi untuk member tidak aktif, khususnya yang bersaldo tinggi. Keaktifan adalah faktor yang paling membedakan dalam analisis ini dan paling mungkin ditindaklanjuti.",
+      "Dorong cross-sell ke produk kedua karena paling stabil, dan hindari menjual produk ketiga tanpa strategi retensi tambahan.",
+      "Jadikan perempuan tidak aktif sebagai kelompok prioritas program loyalitas (churn 32% dibanding 11% pada laki-laki aktif).",
+    ],
     stack: ["Excel", "Looker Studio", "Kaggle"],
     links: [
       { label: "Buka dashboard", href: "https://datastudio.google.com/reporting/def2c868-9123-4873-9e3b-1a0cf5c56028" },
@@ -206,7 +220,7 @@ const meta: Record<string, Pick<Project, "category" | "icon" | "short" | "stat" 
     category: "Full stack",
     icon: "file",
     short: "Sistem surat dinas dengan persetujuan berjenjang. Proyek tim 3 orang, saya mengerjakan modul pegawai.",
-    stat: { value: "90%", label: "selesai, 3 role pengguna" },
+    stat: { value: "3 role", label: "pegawai, pimpinan, dan admin dengan persetujuan berjenjang" },
     cover: [
       { src: "/images/sidora-dashboard-pegawai.png", alt: "Dashboard pegawai SIDORA" },
       { src: "/images/sidora-dashboard-pimpinan.png", alt: "Dashboard pimpinan SIDORA" },

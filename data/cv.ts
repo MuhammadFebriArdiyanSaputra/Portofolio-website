@@ -5,17 +5,18 @@ export type Cv = {
   filename: string; // nama file saat diunduh recruiter
 };
 
+// Taruh file PDF di folder public/. Nama file di href harus sama persis dengan nama file di sana.
 export const cvs: Cv[] = [
   {
-    label: "CV Data Analyst",
-    note: "Analisis data, dashboard, SQL, Excel",
-    href: "/cv-data-analisis.pdf",
-    filename: "cv-data-analisis.pdf",
+    label: "CV Bahasa Indonesia",
+    note: "Untuk perusahaan dan instansi di Indonesia",
+    href: "/cv-id.pdf",
+    filename: "CV-M-Febri-Ardiyan-Saputra-ID.pdf",
   },
   {
-    label: "CV Web Developer",
-    note: "Full stack, Laravel, FastAPI, Next.js",
-    href: "/cv-web-dev.pdf",
-    filename: "cv-web-developer.pdf",
+    label: "CV English",
+    note: "For international or English-language applications",
+    href: "/cv-en.pdf",
+    filename: "CV-M-Febri-Ardiyan-Saputra-EN.pdf",
   },
 ];

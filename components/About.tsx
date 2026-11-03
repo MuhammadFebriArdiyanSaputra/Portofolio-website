@@ -27,12 +27,12 @@ export default function About() {
           </div>
         </div>
         <div>
-          <p>
+          <p className="md:text-justify md:hyphens-auto">
             Lulusan S1 Ilmu Komputer Universitas Lampung yang berfokus pada analisis data dan
             pengembangan web. Saya mengubah data publik menjadi temuan yang bisa ditindaklanjuti, dan
             membangun aplikasi yang dipakai pengguna sungguhan.
           </p>
-          <p className="mt-4 text-soft">
+          <p className="mt-4 md:text-justify md:hyphens-auto text-soft">
             Saat magang di Dinas Tenaga Kerja Provinsi Lampung, saya menganalisis data ketenagakerjaan
             2022 sampai 2024 dan mempresentasikannya kepada Bidang Perencanaan. Saya terbiasa
             membedakan korelasi dari sebab-akibat dan menyebutkan keterbatasan data. Saat ini saya

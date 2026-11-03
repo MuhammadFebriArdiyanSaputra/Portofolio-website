@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, ArrowRight, ExternalLink, Flag, Hammer, Images, Table2, Target, Trophy, UserRound } from "lucide-react";
+import { ArrowLeft, ArrowRight, ExternalLink, Flag, Hammer, Lightbulb, Images, Table2, Target, Trophy, UserRound } from "lucide-react";
 import { projects } from "@/data/projects";
 import { CategoryChip } from "@/components/Icons";
 import Nav from "@/components/Nav";
@@ -86,6 +86,12 @@ export default async function ProjectPage({ params }: Props) {
         <Block icon={Trophy} title="Hasil">
           <ul className="list-disc space-y-2 pl-5 text-soft">{p.result.map((r) => <li key={r}>{r}</li>)}</ul>
         </Block>
+
+        {p.recommendations && p.recommendations.length > 0 && (
+          <Block icon={Lightbulb} title="Rekomendasi">
+            <ol className="list-decimal space-y-2 pl-5 text-soft">{p.recommendations.map((r) => <li key={r}>{r}</li>)}</ol>
+          </Block>
+        )}
 
         {t && (
           <Block icon={Table2} title={t.caption}>
