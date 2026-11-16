@@ -25,7 +25,7 @@ Portofolio pribadi saya sebagai lulusan S1 Ilmu Komputer Universitas Lampung (20
 | Analisis Churn Pelanggan Bank | Data analyst | Dashboard dan 6 insight dari dataset churn bank (10.000 pelanggan), lengkap dengan rekomendasi retensi. |
 | SIDORA | Full stack | Sistem informasi surat menyurat dinas dengan persetujuan berjenjang (proyek tim, saya mengerjakan modul pegawai). |
 | Deteksi Kerusakan Jalan dengan EfficientDet | Machine learning | Skripsi: perbandingan EfficientDet D0, D2, dan D3 pada dataset RDD2022. |
-| Convert-app | Full stack | Aplikasi konversi dan pemindaian dokumen yang berjalan lokal. |
+| DocuMorph-Studio | Full stack | Aplikasi web all-in-one konversi dokumen, manipulasi PDF, dan AI document scanning (YOLOv11-seg) dengan zero data retention. |
 
 Setiap halaman detail proyek memuat: masalah, data dan metode, yang saya kerjakan, hasil, rekomendasi, galeri, dan keterbatasan.
 

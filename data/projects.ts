@@ -1,5 +1,5 @@
 export type ProjectLink = { label: string; href: string; download?: boolean };
-export type Img = { src: string; alt: string; caption?: string };
+export type Img = { src: string; alt: string; caption?: string; wide?: boolean };
 export type Table = { caption: string; head: string[]; rows: string[][]; note?: string };
 
 export type Category = "Data analyst" | "Full stack" | "Machine learning";
@@ -119,33 +119,74 @@ const raw: Omit<Project, "category" | "icon" | "short" | "stat" | "cover">[] = [
   },
   {
     slug: "sidora",
-    title: "SIDORA, Sistem Informasi Surat Menyurat Dinas",
+    title: "SIDORA, Sistem Informasi Dokumen Resmi Aplikasi",
     summary:
-      "Aplikasi web pengelolaan surat dinas dengan persetujuan berjenjang untuk Dinas Tenaga Kerja Provinsi Lampung. Proyek tim 3 orang, saya mengerjakan modul pegawai (full stack).",
-    role: "Tim 3 orang. Saya mengerjakan role pegawai, teman A role pimpinan, dan teman B role admin.",
+      "Aplikasi web tata naskah dinas elektronik (e-office) berbasis Laravel 10 dengan alur persetujuan berjenjang dan penomoran resmi berbasis regulasi Pergub Lampung. Proyek tim 3 orang, saya mengerjakan modul pegawai secara full stack.",
+    role: "Proyek tim 3 orang. Saya mengembangkan Modul Pegawai (Full Stack) dan fitur tanda tangan digital/profil; anggota tim mengembangkan Modul Pimpinan dan Modul Admin. Skema database relasional dan alur verifikasi dirancang bersama.",
     problem:
-      "Surat menyurat masih manual, sehingga saat pimpinan tidak di tempat, surat sulit diteruskan dan persetujuannya terhambat.",
+      "Pengelolaan surat dinas manual rentan terselip, lambat dalam rantai verifikasi, dan kerap terhenti saat pejabat terkait sedang berdinas luar, sehingga dibutuhkan sistem tata naskah dinas elektronik yang aman, terstruktur, dan dapat diakses dari mana saja.",
     did: [
-      "Membangun modul pegawai secara full stack: membuat, menyimpan, mengedit, melihat, dan menghapus surat, lalu mengajukannya ke pimpinan",
-      "Dua jenis surat keluar: dengan kop surat manual (logo dan identitas instansi dapat diubah) dan dengan template standar Disnaker",
-      "Editor isi surat dengan CKEditor, penerimaan surat masuk lewat unggah berkas, serta pengaturan foto profil dan tanda tangan",
-      "Bersama tim: alur persetujuan berjenjang (kepala bidang, sekretariat, kepala dinas, lalu admin) dan desain database",
+      "Mengembangkan Modul Pegawai secara full stack: perancangan CRUD naskah dinas, integrasi rich text editor Quill 2.0.2 untuk formatting surat resmi, serta pengamanan input dengan mews/purifier (XSS prevention)",
+      "Membangun fleksibilitas kop naskah dinas dalam 2 format: kop standar instansi bawaan (keluar) dan kop dinamis lengkap (keluar_full) yang mencakup logo instansi kustom, alamat, kontak, email, dan situs resmi",
+      "Mengimplementasikan alur rantai multi-penandatangan berjenjang: otomatis menyematkan tanda tangan digital pegawai pembuat serta menentukan daftar pimpinan verifikator sesuai hierarki seksi dan bidang",
+      "Merancang sistem manajemen draft dan pemantauan status naskah dinas secara real-time yang terbagi dalam 4 tab: Semua, Menunggu, Disetujui, dan Ditolak (lengkap dengan catatan alasan penolakan dari pimpinan)",
+      "Mengembangkan fitur registrasi surat masuk mandiri berbasis unggah berkas PDF serta menghubungkan alur penerimaan surat masuk eksternal yang didisposisikan oleh admin",
+      "Membangun manajemen profil aparatur dengan fitur tanda tangan digital transparan (PNG) untuk e-signing dan integrasi pemotong foto profil 1:1 berbasis Cropper.js (rotasi dan zoom)",
+      "Berkolaborasi merancang skema basis data relasional (users, surats, surat_penandatangan, disposis), hak akses peran (RoleMiddleware), dan alur persetujuan terintegrasi",
     ],
     result: [
-      "Alur utama sudah berjalan dari awal sampai akhir: pembuatan surat, persetujuan berjenjang oleh pimpinan, nomor surat otomatis oleh admin, hingga disposisi.",
+      "Alur siklus persuratan dinas berjalan penuh dari hulu ke hilir: penyusunan draft oleh pegawai, verifikasi sekuensial oleh pimpinan, penomoran resmi otomatis berbasis klasifikasi arsip oleh admin, hingga ekspor PDF A4 ber-QR Code.",
+      "Menghilangkan hambatan birokrasi dan keterlambatan tanda tangan fisik saat pimpinan bertugas di luar kantor berkat validasi digital berbasis web.",
     ],
     limits:
-      "Rencana pengembangan: pemisahan data antar admin, agar surat masuk yang ditujukan ke admin tertentu hanya terlihat oleh admin itu. Saat ini data semua admin masih digunakan bersama.",
-    stack: ["Laravel 10", "PHP", "CKEditor"],
+      "Pengembangan ke depan: penyediaan rute publik verifikasi naskah (/verify-surat/{id}) untuk validasi pemindaian QR Code pada dokumen fisik cetak, serta penambahan isolasi hak akses data antar-admin untuk surat masuk eksternal.",
+    stack: [
+      "Laravel 10",
+      "PHP",
+      "MySQL",
+      "Quill 2",
+      "Tailwind CSS",
+      "Alpine.js",
+      "DomPDF",
+      "Cropper.js",
+    ],
     links: [{ label: "Kode di GitHub", href: "https://github.com/Aldoptma0704/SIDORA" }],
     images: [
-      { src: "/images/sidora-dashboard-pegawai.png", alt: "Dashboard pegawai SIDORA", caption: "Dashboard pegawai (modul yang saya kerjakan)" },
-      { src: "/images/sidora-buat-surat.png", alt: "Form pembuatan surat keluar", caption: "Form surat keluar (modul yang saya kerjakan)" },
-      { src: "/images/sidora-dashboard-pimpinan.png", alt: "Dashboard pimpinan SIDORA", caption: "Dashboard pimpinan (modul anggota tim)" },
-      { src: "/images/sidora-validasi-surat-pada-pimpinan.png", alt: "Disposisi dan validasi surat oleh pimpinan", caption: "Validasi surat oleh pimpinan (modul anggota tim)" },
-      { src: "/images/sidora-dashboard-admin.png", alt: "Dashboard admin SIDORA", caption: "Dashboard admin (modul anggota tim)" },
-      { src: "/images/sidora-admin-generate-nomor.png", alt: "Penomoran surat oleh admin", caption: "Penomoran surat otomatis oleh admin (modul anggota tim)" },
-      { src: "/images/sidora-kelola-pengguna.png", alt: "Kelola pengguna SIDORA", caption: "Kelola pengguna (modul anggota tim)" },
+      {
+        src: "/images/sidora-dashboard-pegawai.png",
+        alt: "Dashboard pegawai SIDORA",
+        caption: "Modul Pegawai: Dashboard pemantauan surat masuk disposisi dan status verifikasi naskah (Draft, Menunggu, Disetujui, Ditolak)",
+      },
+      {
+        src: "/images/sidora-buat-surat.png",
+        alt: "Form penyusunan naskah dinas",
+        caption: "Modul Pegawai: Penyusunan naskah dinas dengan editor Quill 2, pemilihan kop dinamis, dan konfigurasi rantai multi-penandatangan",
+      },
+      {
+        src: "/images/sidora-dashboard-pimpinan.png",
+        alt: "Dashboard pimpinan SIDORA",
+        caption: "Modul Pimpinan: Antrean naskah dinas yang memerlukan persetujuan dan monitoring surat masuk",
+      },
+      {
+        src: "/images/sidora-validasi-surat-pada-pimpinan.png",
+        alt: "Lembar verifikasi dan validasi surat oleh pimpinan",
+        caption: "Modul Pimpinan: Aksi persetujuan berantai, penolakan naskah disertai catatan koreksi, serta penyematan tanda tangan digital profil",
+      },
+      {
+        src: "/images/sidora-dashboard-admin.png",
+        alt: "Dashboard admin SIDORA",
+        caption: "Modul Admin: Rekapitulasi statistik persuratan, monitoring naskah disetujui, dan pencatatan surat masuk eksternal",
+      },
+      {
+        src: "/images/sidora-admin-generate-nomor.png",
+        alt: "Penomoran surat otomatis oleh admin",
+        caption: "Modul Admin: Penomoran surat resmi otomatis berdasarkan klasifikasi kode arsip daerah Pergub Lampung No. 14 & 16 Tahun 2023",
+      },
+      {
+        src: "/images/sidora-kelola-pengguna.png",
+        alt: "Kelola pengguna dan hak akses SIDORA",
+        caption: "Modul Admin: Manajemen pengguna dan kontrol akses berbasis peran (RBAC) untuk Admin, Pegawai, dan Pimpinan serta atribusi jabatan dan NIP",
+      },
     ],
     featured: true,
   },
@@ -183,27 +224,61 @@ const raw: Omit<Project, "category" | "icon" | "short" | "stat" | "cover">[] = [
     images: [{ src: "/images/dashboard-churn.png", alt: "Dashboard analisis churn pelanggan bank", caption: "Dashboard Looker Studio" }],
   },
   {
-    slug: "convert-app",
-    title: "Convert-app",
+    slug: "documorph-studio",
+    title: "DocuMorph-Studio",
     summary:
-      "Aplikasi konversi dan pemindaian dokumen yang berjalan di komputer sendiri, dibuat agar dokumen pribadi tidak perlu diunggah ke layanan pihak ketiga.",
-    role: "Proyek mandiri. Kode ada di GitHub.",
+      "Aplikasi web serbaguna untuk konversi multi-format, manipulasi dokumen, dan intelligent document scanning dengan integrasi model deep learning YOLOv11-seg serta arsitektur zero data retention untuk privasi berkas.",
+    role: "Pengembang mandiri (full stack & deep learning researcher). Kode tersedia di GitHub.",
     problem:
-      "Saya butuh alat konversi dokumen yang tidak mengirim berkas pribadi ke server lain.",
+      "Kebutuhan alat pengolahan dokumen menyeluruh yang praktis, cepat, dan sepenuhnya aman dari risiko kebocoran privasi (tanpa penyimpanan permanen di server pihak ketiga), sekaligus mampu memindai dokumen miring atau bergelombang secara otomatis menggunakan computer vision berbasis kecerdasan buatan.",
     did: [
-      "Membangun backend FastAPI dengan 14 endpoint: konversi PDF ke Word, Excel, dan PowerPoint (dan sebaliknya), gambar ke PDF, gabung dan pisah PDF, kompres PDF, penghapus watermark, dan scan dokumen",
-      "Memakai OCR (Tesseract), Camelot untuk tabel, serta OpenCV untuk scan dan penghapusan watermark",
-      "Melatih sendiri model YOLOv8n di Kaggle (dataset docs scanner dari Roboflow) untuk mendeteksi area dokumen pada fitur scan",
-      "Menghapus file sementara otomatis setelah respons terkirim, dengan pembersih berkala tiap 10 menit sebagai cadangan",
+      "Mengembangkan backend performa tinggi dengan FastAPI yang mencakup 3 kelompok fitur utama: Convert (PDF ↔ Word, Excel, PowerPoint, Gambar, dan konversi ke Markdown terstruktur untuk AI/LLM), Edit & Organize (Merge dengan thumbnail interaktif, Split custom/ZIP, Compress 4 tingkat), serta Clean & AI Scan",
+      "Melatih dan mengintegrasikan model custom YOLOv11 segmentation (YOLOv11-seg) untuk deteksi kontur kuadrilateral dokumen sub-pixel dan dewarping perspektif otomatis",
+      "Membangun sistem fallback multi-strategi berbasis OpenCV (Canny Edge + Otsu, Morphological Gradient, HSV Saturation, Adaptive Thresholding) untuk menjamin deteksi sudut dokumen tetap presisi dalam berbagai kondisi pencahayaan",
+      "Mengimplementasikan fitur smart watermark removal: pembersihan watermark CamScanner dan header/footer pada level vektor PDF asli tanpa merusak font/mengaburkan halaman, serta OpenCV inpainting untuk watermark gambar",
+      "Menerapkan arsitektur Zero Data Retention: file masukan dan hasil diproses secara ephemeral dan langsung dihancurkan seketika setelah diunduh (via FastAPI BackgroundTask) serta dibersihkan rutin oleh worker otomatis",
+      "Merancang antarmuka web modern yang responsif (Plus Jakarta Sans) dengan drag-and-drop urutan halaman PDF dan kanvas penyesuaian poligon sudut dokumen yang ramah layar sentuh",
     ],
-    result: ["Sebagian besar fitur berfungsi. Contoh kompresi: 6 MB menjadi 3,02 MB (hemat 49,7%)."],
+    result: [
+      "Mendukung konversi dua arah dokumen kantor (Word, Excel, PowerPoint) serta ekspor ke format Markdown ramah AI ingestion/LLM",
+      "Engine kompresi 4-tier (Low, Medium, High, Extreme) dengan ekstraksi dan resampling grafis raster internal",
+      "Pembersihan watermark vektor secara lossless dan pemindaian dokumen cerdas berkat model YOLOv11-seg",
+      "Arsitektur cloud-ready yang siap dideploy secara efisien (Frontend Vercel dan Backend Hugging Face Spaces Docker 16 GB RAM)",
+    ],
     limits:
-      "Berjalan lokal di Windows dengan Microsoft Office terpasang (konversi Office memakai COM), serta butuh Tesseract, Poppler, dan Ghostscript. Kompresi belum optimal untuk PDF yang sudah ringan, rencana perbaikannya adalah menurunkan kualitas gambar di dalam PDF.",
-    stack: ["Python", "FastAPI", "OpenCV", "YOLOv8", "PyMuPDF", "Camelot"],
-    links: [{ label: "Kode di GitHub", href: "https://github.com/MuhammadFebriArdiyanSaputra/Converter-App" }],
+      "Inferensi model deep learning YOLOv11-seg membutuhkan alokasi memori yang memadai (disarankan 16 GB RAM di lingkungan cloud/Hugging Face Spaces). Fitur konversi berbasis format Microsoft Office tertentu membutuhkan headless engine atau dependensi pendukung lokal (Ghostscript dan Poppler) untuk ekstraksi tabel Camelot.",
+    stack: [
+      "Python",
+      "FastAPI",
+      "YOLOv11-seg",
+      "OpenCV",
+      "PyMuPDF",
+      "Camelot",
+      "pdf2docx",
+      "ReportLab",
+      "JavaScript",
+      "Docker",
+    ],
+    links: [
+      { label: "Kode di GitHub", href: "https://github.com/MuhammadFebriArdiyanSaputra/converter-app" },
+      { label: "Riset Model YOLOv11-seg", href: "https://github.com/MuhammadFebriArdiyanSaputra/document-dewarping-yolo11seg" },
+    ],
     images: [
-      { src: "/images/converter-app.png", alt: "Tampilan utama Convert-app", caption: "Tampilan utama" },
-      { src: "/images/convert-pdf-to-docs-converter-app.png", alt: "Konversi PDF ke Word", caption: "Konversi PDF ke Word dengan Microsoft Word" },
+      {
+        src: "/images/menu-convert-documorph.png",
+        alt: "Menu Convert DocuMorph Studio",
+        caption: "Menu Convert: Konversi multi-format PDF, Word, Excel, PPT, Markdown AI, dan Gambar",
+      },
+      {
+        src: "/images/menu-edit&orgnize-documorph.png",
+        alt: "Menu Edit & Organize DocuMorph Studio",
+        caption: "Menu Edit & Organize: Penggabungan (Merge), pemisahan (Split), dan kompresi PDF 4-tier",
+      },
+      {
+        src: "/images/menu-bersihkan&scan-documorph.png",
+        alt: "Menu Bersihkan & AI Scan DocuMorph Studio",
+        caption: "Menu Bersihkan & Scan: AI document scanner berbasis YOLOv11-seg dan pembersihan watermark",
+      },
     ],
   },
 ];
@@ -219,8 +294,8 @@ const meta: Record<string, Pick<Project, "category" | "icon" | "short" | "stat" 
   sidora: {
     category: "Full stack",
     icon: "file",
-    short: "Sistem surat dinas dengan persetujuan berjenjang. Proyek tim 3 orang, saya mengerjakan modul pegawai.",
-    stat: { value: "3 role", label: "pegawai, pimpinan, dan admin dengan persetujuan berjenjang" },
+    short: "Sistem tata naskah dinas elektronik (e-office) berbasis regulasi Pergub Lampung dengan persetujuan berjenjang.",
+    stat: { value: "3 role", label: "pegawai, pimpinan, dan admin dengan verifikasi berjenjang" },
     cover: [
       { src: "/images/sidora-dashboard-pegawai.png", alt: "Dashboard pegawai SIDORA" },
       { src: "/images/sidora-dashboard-pimpinan.png", alt: "Dashboard pimpinan SIDORA" },
@@ -243,12 +318,15 @@ const meta: Record<string, Pick<Project, "category" | "icon" | "short" | "stat" 
     stat: { value: "20,4%", label: "churn dari 10.000 pelanggan" },
     cover: [{ src: "/images/dashboard-churn.png", alt: "Dashboard analisis churn" }],
   },
-  "convert-app": {
+  "documorph-studio": {
     category: "Full stack",
     icon: "cog",
-    short: "Aplikasi konversi dan scan dokumen yang berjalan lokal, agar berkas pribadi tidak diunggah ke pihak ketiga.",
-    stat: { value: "14", label: "endpoint API" },
-    cover: [{ src: "/images/converter-app.png", alt: "Tampilan Convert-app" }],
+    short: "Aplikasi web konversi, manipulasi dokumen, dan AI document scanner (YOLOv11-seg) berarsitektur zero data retention.",
+    stat: { value: "Zero Data", label: "retention & AI scan (YOLOv11)" },
+    cover: [
+      { src: "/images/menu-convert-documorph.png", alt: "Tampilan Menu Convert DocuMorph Studio" },
+      { src: "/images/menu-bersihkan&scan-documorph.png", alt: "Tampilan AI Document Scanner DocuMorph Studio" },
+    ],
   },
 };
 
@@ -257,7 +335,7 @@ const order = [
   "sidora",
   "deteksi-kerusakan-jalan-efficientdet",
   "analisis-churn",
-  "convert-app",
+  "documorph-studio",
 ];
 
 export const projects: Project[] = order.map((slug) => {
@@ -267,7 +345,7 @@ export const projects: Project[] = order.map((slug) => {
 
 export const skills = [
   { group: "Data", items: ["Excel (pivot, rumus IFS, XLOOKUP, INDEX, FILTER)", "Looker Studio", "Pembersihan data", "SQL (dasar)"] },
-  { group: "Machine learning", items: ["Python", "Pandas", "NumPy", "EfficientDet", "YOLOv8", "OpenCV"] },
+  { group: "Machine learning", items: ["Python", "Pandas", "NumPy", "EfficientDet", "YOLOv8 / YOLOv11", "OpenCV"] },
   { group: "Web", items: ["Laravel", "FastAPI", "Next.js"] },
   { group: "Bahasa pemrograman", items: ["Python", "PHP", "TypeScript", "JavaScript"] },
   { group: "Database", items: ["MySQL", "PostgreSQL"] },

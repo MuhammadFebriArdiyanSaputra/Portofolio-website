@@ -6,7 +6,7 @@ interface ContactLink {
   label: string;
   href: string;
   text: string;
-  icon: React.ComponentType<any>; 
+  icon: React.ComponentType<LucideProps>; 
 }
 
 const LinkedinIcon = (props: LucideProps) => (

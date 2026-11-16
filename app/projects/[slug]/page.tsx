@@ -19,7 +19,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const p = projects.find((x) => x.slug === slug);
-  return p ? { title: `${p.title} | Nama Anda`, description: p.short } : {};
+  return p ? { title: `${p.title} | Febri Ardiyan`, description: p.short } : {};
 }
 
 function Block({ icon: Icon, title, children }: { icon: typeof Target; title: string; children: React.ReactNode }) {
@@ -115,15 +115,41 @@ export default async function ProjectPage({ params }: Props) {
 
         {p.images && p.images.length > 0 && (
           <Block icon={Images} title="Galeri">
-            <div className="grid gap-6 sm:grid-cols-2">
-              {p.images.map((im) => (
-                <figure key={im.src} className={p.images!.length === 1 ? "sm:col-span-2" : ""}>
-                  <ImageZoom src={im.src} alt={im.alt} caption={im.caption} className="relative block w-full">
-                    <Image src={im.src} alt={im.alt} width={1400} height={1000} className="h-auto w-full rounded-lg border border-rule bg-white" />
-                  </ImageZoom>
-                  {im.caption && <figcaption className="mt-2 text-sm text-soft">{im.caption}</figcaption>}
-                </figure>
-              ))}
+            <div className="grid gap-6 sm:grid-cols-2 items-start">
+              {p.images.map((im, idx) => {
+                const isWide =
+                  im.wide ||
+                  p.images!.length === 1 ||
+                  (p.images!.length % 2 !== 0 && idx === p.images!.length - 1);
+                return (
+                  <figure
+                    key={im.src}
+                    className={`${isWide ? "sm:col-span-2" : ""} flex flex-col`}
+                  >
+                    <ImageZoom
+                      src={im.src}
+                      alt={im.alt}
+                      caption={im.caption}
+                      className="group relative block w-full overflow-hidden rounded-xl border border-rule bg-white shadow-xs"
+                    >
+                      <div className="relative max-h-[380px] sm:max-h-[440px] w-full overflow-hidden bg-soft/5">
+                        <Image
+                          src={im.src}
+                          alt={im.alt}
+                          width={1400}
+                          height={1000}
+                          className="h-auto w-full object-cover object-top motion-safe:transition-transform motion-safe:duration-300 group-hover:scale-[1.01]"
+                        />
+                      </div>
+                    </ImageZoom>
+                    {im.caption && (
+                      <figcaption className="mt-2.5 text-sm text-soft leading-relaxed">
+                        {im.caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              })}
             </div>
           </Block>
         )}
